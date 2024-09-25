@@ -29,9 +29,9 @@ public class ContaController {
         return contaService.criarConta(conta);
     }
 
-    @PutMapping("/{id}/saldo")
-    public Conta atualizarSaldo(@PathVariable Long id, @RequestParam double novoSaldo) {
-        return contaService.atualizarSaldo(id, novoSaldo);
+    @PutMapping("/{id}/transacao")
+    public Conta realizarTransacao(@PathVariable Long id, @RequestParam double valor, @RequestParam String tipo) {
+        return contaService.realizarTransacao(id, valor, tipo);
     }
 
     @DeleteMapping("/{id}")

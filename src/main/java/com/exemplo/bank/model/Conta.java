@@ -1,9 +1,6 @@
 package com.exemplo.bank.model;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 public class Conta {
@@ -11,23 +8,30 @@ public class Conta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String numeroConta;
     private String titular;
-    private double saldo;
+    private Double saldo;
 
-    // Construtores, Getters e Setters
-    public Conta() {}
+    // Relacionamento 1 Conta para muitas Transacoes
+    @OneToMany(mappedBy = "conta", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Transacao> transacoes;
 
-    public Conta(String titular, double saldo) {
-        this.titular = titular;
-        this.saldo = saldo;
-    }
-
+    // Getters e Setters
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getNumeroConta() {
+        return numeroConta;
+    }
+
+    public void setNumeroConta(String numeroConta) {
+        this.numeroConta = numeroConta;
     }
 
     public String getTitular() {
@@ -38,11 +42,28 @@ public class Conta {
         this.titular = titular;
     }
 
-    public double getSaldo() {
+    public Double getSaldo() {
         return saldo;
     }
 
-    public void setSaldo(double saldo) {
+    public void setSaldo(Double saldo) {
         this.saldo = saldo;
+    }
+
+    public List<Transacao> getTransacoes() {
+        return transacoes;
+    }
+
+    public void setTransacoes(List<Transacao> transacoes) {
+        this.transacoes = transacoes;
+    }
+
+    // Métodos de saque e depósito
+    public void depositar(Double valor) {
+        this.saldo += valor;
+    }
+
+    public void sacar(Double valor) {
+        this.saldo -= valor;
     }
 }
